@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0a;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 28px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 2px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            transition: left 0.3s;
+            z-index: 999;
+            padding-top: 100px;
+        }
+
+        .nav-menu.open {
+            left: 0;
+        }
+
+        .nav-menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 20px 40px;
+            font-size: 24px;
+            transition: background 0.3s;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Page Container */
+        .page {
+            display: none;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        /* Page Title */
+        .page-title {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            z-index: 10;
+        }
+
+        /* Artwork Grid */
+        .artwork-page {
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            width: 70vw;
+            height: 60vh;
+            max-width: 1000px;
+            max-height: 600px;
+        }
+
+        .grid-item {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .grid-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .grid-item:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .grid-item:hover::before {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .grid-item-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            font-weight: 500;
+            text-align: center;
+            z-index: 1;
+            letter-spacing: 0.5px;
+            text-transform: lowercase;
+        }
+
+        /* About Page */
+        .about-page {
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            position: relative;
+        }
+
+        .about-content {
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 80px 60px;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .close-about {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.06);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #0a0a0a;
+            line-height: 1;
+            z-index: 100;
+        }
+
+        .close-about:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: scale(1.1);
+        }
+
+        .about-content h1 {
+            font-size: 40px;
+            margin-bottom: 30px;
+            color: #0a0a0a;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
+
+        .about-content p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        /* Modal/Carousel */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .carousel {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-image {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 4px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #0a0a0a;
+        }
+
+        .carousel-arrow:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .carousel-arrow.prev {
+            left: 20px;
+        }
+
+        .carousel-arrow.next {
+            right: 20px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #0a0a0a;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .carousel-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-menu">
+        <a href="#" onclick="showPage('artwork')">Artwork</a>
+        <a href="#" onclick="showPage('about')">About Me</a>
+    </nav>
+
+    <!-- Artwork Page -->
+    <div class="page artwork-page active" id="artwork-page">
+        <h1 class="page-title">Bottle Cap</h1>
+        <div class="grid-container">
+            <div class="grid-item" onclick="openCarousel('zine')" style="background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800');">
+                <div class="grid-item-title">Zine</div>
+            </div>
+            <div class="grid-item" onclick="openCarousel('illustration')" style="background-image: url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800');">
+                <div class="grid-item-title">Illustration</div>
+            </div>
+            <div class="grid-item" onclick="openCarousel('painting')" style="background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800');">
+                <div class="grid-item-title">Painting</div>
+            </div>
+            <div class="grid-item" onclick="openCarousel('sketchbook')" style="background-image: url('https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=800');">
+                <div class="grid-item-title">Sketchbook</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Page -->
+    <div class="page about-page" id="about-page">
+        <div class="about-content">
+            <button class="close-about" onclick="showPage('artwork')">×</button>
+            <h1>About Me</h1>
+            <p>Hello! I'm a multidisciplinary artist passionate about exploring various forms of visual expression. My work spans across zines, illustrations, paintings, and sketchbook studies.</p>
+            <p>Each medium offers unique opportunities to tell stories and capture moments. Through my art, I aim to create connections and evoke emotions that resonate with viewers.</p>
+            <p>Feel free to explore my portfolio and reach out if you'd like to collaborate or learn more about my work.</p>
+        </div>
+    </div>
+
+    <!-- Carousel Modal -->
+    <div class="modal" id="modal">
+        <button class="close-modal" onclick="closeCarousel()">×</button>
+        <div class="carousel">
+            <button class="carousel-arrow prev" onclick="prevImage()">‹</button>
+            <img class="carousel-image" id="carousel-image" src="" alt="Artwork">
+            <button class="carousel-arrow next" onclick="nextImage()">›</button>
+            <div class="carousel-counter" id="carousel-counter">1 / 5</div>
+        </div>
+    </div>
+
+    <script>
+        // Sample artwork data - replace these URLs with your actual images
+        const artworkData = {
+            zine: [
+                'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1200',
+                'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200',
+                'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=1200',
+                'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=1200',
+                'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200'
+            ],
+            illustration: [
+                'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200',
+                'https://images.unsplash.com/photo-1456086272160-b28b0645b729?w=1200',
+                'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=1200',
+                'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=1200',
+                'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1200'
+            ],
+            painting: [
+                'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=1200',
+                'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=1200',
+                'https://images.unsplash.com/photo-1582561833116-d1498d48e75b?w=1200',
+                'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1200',
+                'https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=1200'
+            ],
+            sketchbook: [
+                'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=1200',
+                'https://images.unsplash.com/photo-1516534775068-ba3e7458af70?w=1200',
+                'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=1200',
+                'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=1200',
+                'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200'
+            ]
+        };
+
+        let currentSection = '';
+        let currentImageIndex = 0;
+
+        // Menu toggle
+        function toggleMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            hamburger.classList.toggle('open');
+            navMenu.classList.toggle('open');
+        }
+
+        // Page navigation
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageName + '-page').classList.add('active');
+            toggleMenu();
+        }
+
+        // Open carousel
+        function openCarousel(section) {
+            currentSection = section;
+            currentImageIndex = 0;
+            updateCarousel();
+            document.getElementById('modal').classList.add('active');
+        }
+
+        // Close carousel
+        function closeCarousel() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Previous image
+        function prevImage() {
+            const images = artworkData[currentSection];
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            updateCarousel();
+        }
+
+        // Next image
+        function nextImage() {
+            const images = artworkData[currentSection];
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            updateCarousel();
+        }
+
+        // Update carousel display
+        function updateCarousel() {
+            const images = artworkData[currentSection];
+            document.getElementById('carousel-image').src = images[currentImageIndex];
+            document.getElementById('carousel-counter').textContent = 
+                `${currentImageIndex + 1} / ${images.length}`;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('modal');
+            if (modal.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'Escape') closeCarousel();
+            }
+        });
+    </script>
+</body>
+</html>
