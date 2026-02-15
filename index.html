@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #0a0a0a;
+            background: #fffff4;
             height: 100vh;
             overflow: hidden;
         }
@@ -35,7 +35,7 @@
         .hamburger span {
             width: 100%;
             height: 2px;
-            background: white;
+            background: rgb(0, 0, 0);
             transition: all 0.3s;
         }
 
@@ -58,7 +58,7 @@
             left: -300px;
             width: 300px;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(255, 255, 255, 0.95);
             transition: left 0.3s;
             z-index: 999;
             padding-top: 100px;
@@ -70,7 +70,7 @@
 
         .nav-menu a {
             display: block;
-            color: white;
+            color: rgb(0, 0, 0);
             text-decoration: none;
             padding: 20px 40px;
             font-size: 24px;
@@ -98,7 +98,7 @@
             top: 40px;
             left: 50%;
             transform: translateX(-50%);
-            color: white;
+            color: rgb(0, 0, 0);
             font-size: 48px;
             font-weight: 300;
             letter-spacing: 2px;
@@ -341,17 +341,17 @@
     <div class="page artwork-page active" id="artwork-page">
         <h1 class="page-title">Bottle Cap</h1>
         <div class="grid-container">
-            <div class="grid-item" onclick="openCarousel('zine')" style="background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800');">
-                <div class="grid-item-title">Zine</div>
+            <div class="grid-item" onclick="openCarousel('zine')" style="background-image: url('assets/img/zine1.jpg');">
+                <div class="grid-item-title">zine</div>
             </div>
-            <div class="grid-item" onclick="openCarousel('illustration')" style="background-image: url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800');">
-                <div class="grid-item-title">Illustration</div>
+            <div class="grid-item" onclick="openCarousel('picturebook')" style="background-image: url('assets/img/pb1.jpg');">
+                <div class="grid-item-title">picturebook</div>
             </div>
-            <div class="grid-item" onclick="openCarousel('painting')" style="background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800');">
-                <div class="grid-item-title">Painting</div>
+            <div class="grid-item" onclick="openCarousel('illustration')" style="background-image: url('assets/img/illustration1.jpg');">
+                <div class="grid-item-title">illustration</div>
             </div>
-            <div class="grid-item" onclick="openCarousel('sketchbook')" style="background-image: url('https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=800');">
-                <div class="grid-item-title">Sketchbook</div>
+            <div class="grid-item" onclick="openCarousel('sketchbook')" style="background-image: url('assets/img/sketch1.jpg');">
+                <div class="grid-item-title">sketchbook</div>
             </div>
         </div>
     </div>
@@ -361,9 +361,7 @@
         <div class="about-content">
             <button class="close-about" onclick="showPage('artwork')">×</button>
             <h1>About Me</h1>
-            <p>Hello! I'm a multidisciplinary artist passionate about exploring various forms of visual expression. My work spans across zines, illustrations, paintings, and sketchbook studies.</p>
-            <p>Each medium offers unique opportunities to tell stories and capture moments. Through my art, I aim to create connections and evoke emotions that resonate with viewers.</p>
-            <p>Feel free to explore my portfolio and reach out if you'd like to collaborate or learn more about my work.</p>
+            <p>誰...誰是主角？</p>
         </div>
     </div>
 
@@ -382,32 +380,31 @@
         // Sample artwork data - replace these URLs with your actual images
         const artworkData = {
             zine: [
-                'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1200',
-                'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200',
-                'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=1200',
-                'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=1200',
-                'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200'
+                'assets/img/zine1.jpg',
+                'assets/img/zine2.jpg',
+                'assets/img/zine3.jpg',
+                'assets/img/zine4.jpg'
+            ],
+            picturebook: [
+                'assets/img/pb1.jpg',
+                'assets/img/pb2.jpg',
+                'assets/img/pb3.jpg',
+                'assets/img/pb4.jpg',
+                'assets/img/pb5.jpg'
             ],
             illustration: [
-                'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200',
-                'https://images.unsplash.com/photo-1456086272160-b28b0645b729?w=1200',
-                'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=1200',
-                'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=1200',
-                'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1200'
-            ],
-            painting: [
-                'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=1200',
-                'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=1200',
-                'https://images.unsplash.com/photo-1582561833116-d1498d48e75b?w=1200',
-                'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1200',
-                'https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=1200'
+                'assets/img/illustration1.jpg',
+                'assets/img/illustration2.jpg',
+                'assets/img/illustration3.jpg',
+                'assets/img/illustration4.jpg',
+                'assets/img/illustration5.jpg'
             ],
             sketchbook: [
-                'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=1200',
-                'https://images.unsplash.com/photo-1516534775068-ba3e7458af70?w=1200',
-                'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=1200',
-                'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=1200',
-                'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200'
+                'assets/img/sketch1.jpg',
+                'assets/img/sketch2.jpg',
+                'assets/img/sketch3.jpg',
+                'assets/img/sketch4.jpg',
+                'assets/img/sketch5.jpg'
             ]
         };
 
