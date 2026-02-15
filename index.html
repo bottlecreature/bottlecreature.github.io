@@ -310,7 +310,7 @@
 
         .carousel-counter {
             position: absolute;
-            bottom: 20px;
+            bottom: 70px;
             left: 50%;
             transform: translateX(-50%);
             color: white;
@@ -320,6 +320,21 @@
             border-radius: 20px;
             font-weight: 300;
             letter-spacing: 0.5px;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-weight: 300;
+            max-width: 80%;
+            text-align: center;
         }
     </style>
 </head>
@@ -333,7 +348,7 @@
 
     <!-- Navigation -->
     <nav class="nav-menu">
-        <a href="#" onclick="showPage('artwork')">Artwork</a>
+        <!-- <a href="#" onclick="showPage('artwork')">Artwork</a> -->
         <a href="#" onclick="showPage('about')">About Me</a>
     </nav>
 
@@ -373,6 +388,7 @@
             <img class="carousel-image" id="carousel-image" src="" alt="Artwork">
             <button class="carousel-arrow next" onclick="nextImage()">›</button>
             <div class="carousel-counter" id="carousel-counter">1 / 5</div>
+            <div class="carousel-caption" id="carousel-caption">Caption text goes here</div>
         </div>
     </div>
 
@@ -406,6 +422,39 @@
                 'assets/img/sketch3.jpg',
                 'assets/img/sketch4.jpg',
                 'assets/img/sketch5.jpg'
+            ]
+        };
+
+        // Captions for each artwork - add your own captions here
+        const captionData = {
+            zine: [
+                'zine 1 description',
+                'zine 2 description',
+                'zine 3 description',
+                'zine 4 description',
+                'zine 5 Ddescription'
+            ],
+            picturebook: [
+                'pb 1 description',
+                'bp 2 description',
+                'pb 3 description',
+                'pb 4 description',
+                'pb 5 description'
+            ],
+            illustration: [
+                'illustration 1 description',
+                'illustration 2 description',
+                'illustration 3 description',
+                'illustration 4 description',
+                'illustration 5 description'
+            ],
+
+            sketchbook: [
+                'sketchbook 1 description',
+                'sketchbook 2 description',
+                'sketchbook 3 description',
+                'sketchbook 4 description',
+                'sketchbook 5 description'
             ]
         };
 
@@ -457,9 +506,11 @@
         // Update carousel display
         function updateCarousel() {
             const images = artworkData[currentSection];
+            const captions = captionData[currentSection];
             document.getElementById('carousel-image').src = images[currentImageIndex];
             document.getElementById('carousel-counter').textContent = 
                 `${currentImageIndex + 1} / ${images.length}`;
+            document.getElementById('carousel-caption').textContent = captions[currentImageIndex];
         }
 
         // Keyboard navigation
